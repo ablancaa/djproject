@@ -9,11 +9,6 @@ from selenium.common.exceptions import NoSuchElementException
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-#from django.contrib.auth.models import User
-#from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-#from selenium.webdriver.firefox.webdriver import WebDriver
-#from selenium.webdriver.firefox.options import Options
-#from selenium.webdriver.common.by import By
 
 class MySeleniumTests(StaticLiveServerTestCase):
 
@@ -21,7 +16,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
     def setUpClass(cls):
         super().setUpClass()
         opts = Options()
-        opts.headless = False  # Can be set to True per mode "headless" si vols executar sense interfície gràfica
+        opts.headless = False  # Mode "headless" per executar sense interfície gràfica
         cls.selenium = WebDriver(service=Service(GeckoDriverManager().install()), options=opts)
         cls.selenium.implicitly_wait(5)
 
@@ -112,3 +107,13 @@ class MySeleniumTests(StaticLiveServerTestCase):
 
         # Comprovar que hem iniciat sessió
         assert "Site administration | Django site admin" in self.selenium.page_source
+
+        try:
+            # Busca l'element "Log out" per XPath
+            self.selenium.find_element(By.XPATH, "//a[text()='Log out']")
+            print("Botó de Log Out")
+            # Si es troba l'element, el test fallarà amb aquest missatge d'error
+            assert False, "Trobat element que NO hi ha de ser"
+        except NoSuchElementException:
+            # Si no troba l'element, el test passarà correctament
+            pass
