@@ -32,7 +32,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def test_staff_user_access(self):
-        # Log in as superuser
+        # Log in com superusuari
         self.selenium.get(f'{self.live_server_url}/admin/')
         
         # Trobar camps d'usuari i contrasenya
@@ -62,14 +62,15 @@ class MySeleniumTests(StaticLiveServerTestCase):
         new_user_password_input.send_keys("@password123")
         new_user_password_confirm_input.send_keys("@password123")
 
-        # Prémer botó de guardar
+        # Prémer botó de guardar i seguir editant
         self.selenium.find_element(By.NAME, "_continue").click()
 
         # Marcar com a staff
         staff_status_checkbox=self.selenium.find_element(By.NAME, "is_staff")
         if not staff_status_checkbox.is_selected():
             staff_status_checkbox.click()
-        
+
+        # Prémer botó de guardar
         self.selenium.find_element(By.NAME, "_save").click()
 
         # Comprovar que el nou usuari apareix a la llista
@@ -91,7 +92,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
         except NoSuchElementException:
             pass
 
-        # Log in as staff user
+        # Log in com staff user
         self.selenium.get(f'{self.live_server_url}/admin/')
         
         # Trobar camps d'usuari i contrasenya
